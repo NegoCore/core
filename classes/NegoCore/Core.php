@@ -16,34 +16,6 @@
 class NegoCore_Core {
 
     /**
-     * Auto load Backend & Frontend classes
-     *
-     * @param string $class
-     * @return bool
-     */
-    public static function auto_load($class)
-    {
-        if (strpos($class, '_Controller_') !== false)
-        {
-            list($module, $dir, $file) = explode('_', $class);
-
-            // Maybe MODPATH constant works for now, I do not know in future... Check it!
-            $filename = MODPATH.strtolower($module).DIRECTORY_SEPARATOR.'classes'.DIRECTORY_SEPARATOR.$dir.DIRECTORY_SEPARATOR.$file.EXT;
-
-            if (is_file($filename))
-            {
-                require $filename;
-
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
      * Call a class from Kohana or NegoCore since Twig view.
      *
      * @param $class
