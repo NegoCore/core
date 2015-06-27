@@ -161,7 +161,7 @@ class NegoCore_Messages {
      * @param string $file File or directory to error messages.
      * @return mixed
      */
-    public static function validation($validation, $file = 'validation')
+    public static function validation($validation, $file = 'models')
     {
         $messages = $validation->errors($file);
 
