@@ -33,7 +33,10 @@ return array(
      *         'my_method' => array('MyClass', 'my_method'),
      *     ),
      */
-    'functions' => array(),
+    'functions' => array(
+        'get_messages' => array('Messages', 'get'),
+        'get_form_error' => array('Messages', 'form_error')
+    ),
     'filters' => array(
         'without' => array('Twig_Filters', 'without')
     ),
