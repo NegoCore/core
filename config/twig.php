@@ -34,6 +34,11 @@ return array(
      *     ),
      */
     'functions' => array(
+        // Assets
+        'get_css' => array('Assets', 'css'),
+        'get_js' => array('Assets', 'js'),
+        'image' => array('Assets', 'image'),
+        // Messages
         'get_messages' => array('Messages', 'get'),
         'get_form_error' => array('Messages', 'form_error')
     ),

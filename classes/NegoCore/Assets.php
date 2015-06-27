@@ -9,6 +9,7 @@
  */
 
 // --------------------------------------------------------------------------------
+
 /**
  * Class NegoCore_Assets
  */
@@ -213,8 +214,6 @@ class NegoCore_Assets {
 
         $asset = Assets::$js[$handle];
 
-        //if (in_array($asset['src'], Assets::))
-
         return HTML::script($asset['src']);
     }
 
@@ -247,6 +246,51 @@ class NegoCore_Assets {
         }
 
         unset(Assets::$js[$handle]);
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get image URL or HTML tag
+     *
+     * @param string $file Image name with extension.
+     * @param bool $html Return as HTML tag
+     * @param array|string $attributes String is alt text of IMG tag.
+     * @return string
+     */
+    public static function image($file, $html = false, $attributes = null, $module = null)
+    {
+        // Module method
+        if ( ! is_bool($html))
+        {
+            $params = array_pad(func_get_args(), 4, null);
+            $params[2] = (bool) $params[2];
+
+            return call_user_func_array('Assets::image', array($params[1], $params[2], $params[3], $params[0]));
+        }
+
+        // File URL
+        $file = URL::site(($module !== null ? $module : 'application').'/assets/img/' . $file);
+
+        // HTML Tag?
+        if ($html == true)
+        {
+            $attrs = array();
+
+            // Alt text
+            if ( ! is_array($attributes))
+            {
+                $attrs['alt'] = $attributes;
+            }
+            else
+            {
+                $attrs = $attributes;
+            }
+
+            return HTML::image($file, $attrs);
+        }
+
+        return $file;
     }
 
     // ----------------------------------------------------------------------
