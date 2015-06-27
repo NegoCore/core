@@ -73,7 +73,7 @@ class NegoCore_URL extends Kohana_URL {
             );
         }
 
-        return Route::get($route)->uri($controller);
+        return URL::site(Route::get($route)->uri($controller));
     }
 
     // ----------------------------------------------------------------------
@@ -97,6 +97,6 @@ class NegoCore_URL extends Kohana_URL {
             );
         }
 
-        return Route::get('backend')->uri($controller);
+        return URL::site(Route::get('backend')->uri($controller));
     }
 }
