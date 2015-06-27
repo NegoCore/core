@@ -30,20 +30,20 @@ return array(
      * Custom functions, filters and tests
      *
      *     'functions' => array(
-     *         'my_method' => array('MyClass', 'my_method'),
+     *         array('my_method', array('MyClass', 'my_method'), array('pre_scape' => false)),
      *     ),
      */
     'functions' => array(
         // Assets
-        'get_css' => array('Assets', 'css'),
-        'get_js' => array('Assets', 'js'),
-        'image' => array('Assets', 'image'),
+        array('get_css', array('Assets', 'css'), array('is_safe' => array('html'))),
+        array('get_js', array('Assets', 'js'), array('is_safe' => array('html'))),
+        array('image', array('Assets', 'image'), array('is_safe' => array('html'))),
         // Messages
-        'get_messages' => array('Messages', 'get'),
-        'get_form_error' => array('Messages', 'form_error')
+        array('get_messages', array('Messages', 'get')),
+        array('get_form_error', array('Messages', 'form_error'))
     ),
     'filters' => array(
-        'without' => array('Twig_Filters', 'without')
+        array('without', array('Twig_Filters', 'without'))
     ),
     'tests' => array(),
 );
