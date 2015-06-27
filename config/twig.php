@@ -35,9 +35,12 @@ return array(
      */
     'functions' => array(
         // Assets
-        array('get_css', array('Assets', 'css'), array('is_safe' => array('html'))),
-        array('get_js', array('Assets', 'js'), array('is_safe' => array('html'))),
+        array('get_css', array('Assets', 'all_css'), array('is_safe' => array('html'))),
+        array('get_js', array('Assets', 'all_js'), array('is_safe' => array('html'))),
         array('image', array('Assets', 'image'), array('is_safe' => array('html'))),
+        // Document
+        array('get_title', array('Document', 'get_title'), array('is_safe' => array('html'))),
+        array('get_meta_tags', array('Document', 'all_meta'), array('is_safe' => array('html'))),
         // Messages
         array('get_messages', array('Messages', 'get')),
         array('get_form_error', array('Messages', 'form_error'))

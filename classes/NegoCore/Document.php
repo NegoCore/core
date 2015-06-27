@@ -23,32 +23,32 @@ class NegoCore_Document {
      *
      * @var string
      */
-    public static $title;
+    protected static $_title;
 
     /**
      * Document Metadata
      *
      * @var array
      */
-    public static $metadata;
+    protected static $_meta_data;
 
     /**
-     * Get or Set metadata
+     * Set document title
      *
      * @param string $title
-     * @return string
+     * @throws Kohana_Exception
      */
-    public static function title($title = null)
+    public static function title($title = '')
     {
-        if ($title !== null)
+        $site = Kohana::$config->load('site.title');
+        if (is_array($site))
         {
-            $site = Kohana::$config->load('site.title');
-            if (is_array($site))
-            {
-                $name = isset($site['name']) ? $site['name'] : '';
-                $separator = isset($site['separator']) ? $site['separator'] : '|';
-                $dir = isset($site['dir']) ? $site['dir'] : 'right';
+            $name = isset($site['name']) ? $site['name'] : '';
+            $separator = isset($site['separator']) ? $site['separator'] : '|';
+            $dir = isset($site['dir']) ? $site['dir'] : 'right';
 
+            if ( ! empty($title))
+            {
                 if ($dir == 'left')
                 {
                     $title = $name.' '.$separator.' '.$title;
@@ -58,11 +58,26 @@ class NegoCore_Document {
                     $title .= ' '.$separator.' '.$name;
                 }
             }
-
-            Document::$title = HTML::chars($title);
+            else
+            {
+                $title = $name;
+            }
         }
 
-        return Document::$title;
+        self::$_title = HTML::chars($title);
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get document title
+     *
+     * @param bool $html True returns HTML title tag
+     * @return string
+     */
+    public static function get_title($html = false)
+    {
+        return $html == true ? '<title>'.self::$_title.'</title>' : self::$_title;
     }
 
     // ----------------------------------------------------------------------
@@ -86,7 +101,7 @@ class NegoCore_Document {
             return Document::get_meta($handle);
         }
 
-        return Document::$metadata[$handle] = array(
+        return self::$_meta_data[$handle] = array(
             'attributes' => $attributes,
             'handle' => $handle,
             'type' => 'meta'
@@ -102,13 +117,13 @@ class NegoCore_Document {
      */
     public static function all_meta()
     {
-        if (empty(Document::$metadata))
+        if (empty(self::$_meta_data))
         {
             return false;
         }
 
         $metadata = array();
-        foreach (Document::$metadata as $handle => $data)
+        foreach (self::$_meta_data as $handle => $data)
         {
             $metadata[] = Document::get_meta($handle);
         }
@@ -126,12 +141,12 @@ class NegoCore_Document {
      */
     public static function get_meta($handle)
     {
-        if ( ! isset(Document::$metadata[$handle]))
+        if ( ! isset(self::$_meta_data[$handle]))
         {
             return false;
         }
 
-        $meta = Document::$metadata[$handle];
+        $meta = self::$_meta_data[$handle];
 
         return '<meta' . HTML::attributes($meta['attributes']) . ' />';
     }
@@ -148,11 +163,11 @@ class NegoCore_Document {
         // Remove all
         if ($handle === null)
         {
-            Document::$metadata = array();
+            self::$_meta_data = array();
             return;
         }
 
-        unset(Document::$metadata[$handle]);
+        unset(self::$_meta_data[$handle]);
     }
 
 }
