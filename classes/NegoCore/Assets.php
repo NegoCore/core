@@ -18,12 +18,12 @@ class NegoCore_Assets {
     /**
      * @var array CSS assets
      */
-    public static $css = array();
+    protected static $_css = array();
 
     /**
      * @var array JavaScript assets
      */
-    public static $js = array();
+    protected static $_js = array();
 
     /**
      * Get or Set CSS assets
@@ -55,7 +55,7 @@ class NegoCore_Assets {
             $attributes['media'] = 'all';
         }
 
-        return Assets::$css[$handle] = array(
+        return self::$_css[$handle] = array(
             'src' => strpos($src, '//') !== false ? $src : URL::site(($module !== null ? 'modules/'.$module : '') . '/assets/css/' . $src),
             'deps' => (array) $deps,
             'attrs' => $attributes,
@@ -73,13 +73,13 @@ class NegoCore_Assets {
      */
     public static function all_css()
     {
-        if (empty(Assets::$css))
+        if (empty(self::$_css))
         {
             return false;
         }
 
         $assets = array();
-        foreach (Assets::_sort(Assets::$css) as $handle => $data)
+        foreach (Assets::_sort(self::$_css) as $handle => $data)
         {
             $assets[] = Assets::get_css($handle);
         }
@@ -97,12 +97,12 @@ class NegoCore_Assets {
      */
     public static function get_css($handle)
     {
-        if ( ! isset(Assets::$css[$handle]))
+        if ( ! isset(self::$_css[$handle]))
         {
             return false;
         }
 
-        $asset = Assets::$css[$handle];
+        $asset = self::$_css[$handle];
 
         return HTML::style($asset['src'], $asset['attrs']);
     }
@@ -119,11 +119,11 @@ class NegoCore_Assets {
         // Remove all
         if ($handle === null)
         {
-            Assets::$css = array();
+            self::$_css = array();
             return;
         }
 
-        unset(Assets::$css[$handle]);
+        unset(self::$_css[$handle]);
     }
 
     // ----------------------------------------------------------------------
@@ -150,7 +150,7 @@ class NegoCore_Assets {
             return Assets::get_js($handle);
         }
 
-        return Assets::$js[$handle] = array(
+        return self::$_js[$handle] = array(
             'src' => strpos($src, '//') !== false ? $src : URL::site(($module !== null ? 'modules/'.$module : '') . '/assets/js/' . $src),
             'deps' => (array) $deps,
             'footer' => (bool) $footer,
@@ -169,13 +169,13 @@ class NegoCore_Assets {
      */
     public static function all_js($footer = false)
     {
-        if (empty(Assets::$js))
+        if (empty(self::$_js))
         {
             return false;
         }
 
         $assets = array();
-        foreach (Assets::$js as $handle => $data)
+        foreach (self::$_js as $handle => $data)
         {
             if ($data['footer'] === $footer)
             {
@@ -207,12 +207,12 @@ class NegoCore_Assets {
      */
     public static function get_js($handle)
     {
-        if ( ! isset(Assets::$js[$handle]))
+        if ( ! isset(self::$_js[$handle]))
         {
             return false;
         }
 
-        $asset = Assets::$js[$handle];
+        $asset = self::$_js[$handle];
 
         return HTML::script($asset['src']);
     }
@@ -228,24 +228,24 @@ class NegoCore_Assets {
     {
         if ($handle === null)
         {
-            Assets::$js = array();
+            self::$_js = array();
             return;
         }
 
         if (is_bool($handle))
         {
-            foreach (Assets::$js as $handle => $data)
+            foreach (self::$_js as $handle => $data)
             {
                 if ($data['footer'] === $handle)
                 {
-                    unset(Assets::$js[$handle]);
+                    unset(self::$_js[$handle]);
                 }
             }
 
             return;
         }
 
-        unset(Assets::$js[$handle]);
+        unset(self::$_js[$handle]);
     }
 
     // ----------------------------------------------------------------------
