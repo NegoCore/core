@@ -179,7 +179,7 @@ class NegoCore_Messages {
     public static function form_error($field = null)
     {
         if ($field === null)
-            return isset(self::$_data[Messages::VALIDATION]) && ! empty(self::$_data[Messages::VALIDATION]);
+            return isset(self::$_data[Messages::VALIDATION]) ? self::$_data[Messages::VALIDATION] : null;
 
         return isset(self::$_data[Messages::VALIDATION][$field]) ? self::$_data[Messages::VALIDATION][$field] : null;
     }

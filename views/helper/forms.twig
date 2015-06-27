@@ -109,7 +109,7 @@
     <div class="form-group">
         <div class="col-xs-4 col-xs-offset-2">
             {% if not_cancel is null %}
-                <button type="button" class="btn btn-default" onclick="history.{% if get_form_error() == true %}go(-2);{% else %}back();{% endif %} return false;">Cancelar</button>
+                <button type="button" class="btn btn-default" onclick="history.{% if get_form_error() is not null %}go(-2);{% else %}back();{% endif %} return false;">Cancelar</button>
             {% endif %}
             <button type="submit" class="btn {{ class|default('btn-primary') }}">{{ label }}</button>
         </div>
