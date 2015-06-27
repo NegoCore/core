@@ -56,7 +56,7 @@ class NegoCore_Assets {
         }
 
         return self::$_css[$handle] = array(
-            'src' => strpos($src, '//') !== false ? $src : URL::site(($module !== null ? 'modules/'.$module : '') . '/assets/css/' . $src),
+            'src' => strpos($src, '//') !== false ? $src : URL::site(($module !== null ? 'modules/'.$module : 'application') . '/assets/css/' . $src),
             'deps' => (array) $deps,
             'attrs' => $attributes,
             'handle' => $handle,
@@ -151,7 +151,7 @@ class NegoCore_Assets {
         }
 
         return self::$_js[$handle] = array(
-            'src' => strpos($src, '//') !== false ? $src : URL::site(($module !== null ? 'modules/'.$module : '') . '/assets/js/' . $src),
+            'src' => strpos($src, '//') !== false ? $src : URL::site(($module !== null ? 'modules/'.$module : 'application') . '/assets/js/' . $src),
             'deps' => (array) $deps,
             'footer' => (bool) $footer,
             'handle' => $handle,
