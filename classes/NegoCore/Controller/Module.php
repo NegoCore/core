@@ -48,7 +48,7 @@ class NegoCore_Controller_Module extends Controller_Security {
         $this->_module_path = $module_path;
 
         // Module directory name
-        $this->_module_name = str_replace(MODPATH, '', $module_path);
+        $this->_module_name = trim(str_replace(MODPATH, '', $module_path), '/');
     }
 
     // ----------------------------------------------------------------------
