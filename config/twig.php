@@ -43,7 +43,10 @@ return array(
         array('get_meta_tags', array('Document', 'all_meta'), array('is_safe' => array('html'))),
         // Messages
         array('get_messages', array('Messages', 'get')),
-        array('get_form_error', array('Messages', 'form_error'))
+        array('get_form_error', array('Messages', 'form_error')),
+        // Navigation
+        array('get_navigation', array('Navigation', 'get')),
+        array('get_current_page', array('Navigation', 'get_current_page'))
     ),
     'filters' => array(
         array('without', array('Twig_Filters', 'without'))

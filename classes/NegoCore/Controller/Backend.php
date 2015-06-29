@@ -19,14 +19,8 @@ class NegoCore_Controller_Backend extends Controller_Template {
     {
         parent::before();
 
-        // ----------------------------------------------------------------------
-
-        // Navigation
+        // Navigation init
         Navigation::init(Kohana::$config->load('sitemap')->as_array());
-
-        // Set to view
-        $this->view->set_global('navigation', Navigation::get());
-        $this->view->set_global('page', Navigation::$current);
 
         // ----------------------------------------------------------------------
         // Style

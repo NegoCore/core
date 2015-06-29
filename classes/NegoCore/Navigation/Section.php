@@ -52,6 +52,13 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
 
     // ----------------------------------------------------------------------
 
+    /**
+     * Add page to section.
+     *
+     * @param Navigation_Abstract $page
+     * @param int $priority
+     * @return $this
+     */
     public function add_page(Navigation_Abstract &$page, $priority = 1)
     {
         $priority = (int) $priority;
@@ -191,6 +198,12 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
 
     // ----------------------------------------------------------------------
 
+    /**
+     * Get active page based on current URI
+     *
+     * @param string $uri
+     * @return bool
+     */
     public function find_active_page_by_uri($uri)
     {
         $found = false;
@@ -261,9 +274,9 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
                         $length += strlen(BACKEND_DIR_NAME);
                     }
 
-                    $url = trim(substr($url, $length), '/');
+                    $url = substr($url, $length);
 
-                    if ( ! empty($url) && strpos($uri, $url) !== false)
+                    if ( ! empty($url) && strpos($uri, $url) !== false || ($uri === false && $uri === $url))
                     {
                         $section->set_active();
 
@@ -330,6 +343,11 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
 
     // ----------------------------------------------------------------------
 
+    /**
+     * Get section menu
+     *
+     * @return array
+     */
     public function get_menu()
     {
         $menu_items = array();

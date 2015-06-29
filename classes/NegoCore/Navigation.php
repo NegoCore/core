@@ -157,4 +157,19 @@ class NegoCore_Navigation {
 
         return Navigation::$_root_section;
     }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Return current page.
+     *
+     * @return Navigation_Page
+     */
+    public static function get_current_page()
+    {
+        if (Navigation::$current === null)
+            Navigation::get();
+
+        return Navigation::$current;
+    }
 }
