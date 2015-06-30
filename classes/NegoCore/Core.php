@@ -16,51 +16,6 @@
 class NegoCore_Core {
 
     /**
-     * Return a config group
-     *
-     * @param $group
-     * @return Kohana_Config_Group
-     * @throws Kohana_Exception
-     */
-    public function config($group)
-    {
-        return Kohana::$config->load($group);
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
-     * Returns a string with a url string based on arguments
-     *
-     * @param string $controller
-     * @param string $action
-     * @param mixed $id
-     * @param string $route
-     * @return string
-     */
-    public function get_url($controller = null, $action = null, $id = null, $route = 'default')
-    {
-        return URL::route($route, $controller, $action, $id);
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
-     * Returns a string with a backend url string based on arguments
-     *
-     * @param string $controller
-     * @param string $action
-     * @param mixed $id
-     * @return string
-     */
-    public function backend_url($controller = null, $action = null, $id = null)
-    {
-        return URL::backend($controller, $action, $id);
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
      * Returns the filename of view.
      *
      * @param string $module Name of module

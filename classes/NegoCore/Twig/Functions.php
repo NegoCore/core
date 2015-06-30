@@ -76,4 +76,44 @@ class NegoCore_Twig_Functions {
 
         return self::$_module_config->load($group, $module);
     }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get URL
+     *
+     * @param string $controller Controller name or route name
+     * @param string|array $action Action name or array to pass to route
+     * @param mixed $id
+     * @return string
+     */
+    public static function get_url($controller = '', $action = null, $id = null)
+    {
+        if ($action === null && $id === null)
+            return URL::site($controller);
+
+        if (is_array($action))
+            return URL::route($controller, $action);
+
+        return URL::route('default', $controller, $action, $id);
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get Backend URL
+     *
+     * @param string $controller Controller name
+     * @param string $action Action name
+     * @param mixed $id
+     * @return string
+     */
+    public static function get_backend_url($controller = '', $action = null, $id = null)
+    {
+        return self::get_url('backend', array(
+            'controller' => $controller,
+            'action' => $action,
+            'id' => $id
+        ));
+    }
 }

@@ -49,7 +49,9 @@ return array(
         array('get_current_page', array('Navigation', 'get_current_page')),
         // Twig Functions
         array('get_class', array('Twig_Functions', 'get_class')),
-        array('get_config', array('Twig_Functions', 'get_config'))
+        array('get_config', array('Twig_Functions', 'get_config')),
+        array('get_url', array('Twig_Functions', 'get_url')),
+        array('get_backend_url', array('Twig_Functions', 'get_backend_url'))
     ),
     'filters' => array(
         array('without', array('Twig_Filters', 'without'))
