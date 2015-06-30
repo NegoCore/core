@@ -54,6 +54,14 @@ class NegoCore_Twig_Functions {
 
     // ----------------------------------------------------------------------
 
+    /**
+     * Get configuration
+     *
+     * @param string $group Group name
+     * @param string $module Module name
+     * @return Kohana_Config_Group|mixed
+     * @throws Twig_Exception
+     */
     public static function get_config($group, $module = null)
     {
         // Kohana config

@@ -32,12 +32,12 @@ class NegoCore_Twig_Config {
     {
         if (empty($group) || empty($module))
         {
-            throw new Kohana_Exception("Need to specify a config group and module name");
+            throw new Twig_Exception("Need to specify a config group and module name");
         }
 
         if ( ! is_string($group) || ! is_string($module))
         {
-            throw new Kohana_Exception("Config group and module name must be a string");
+            throw new Twig_Exception("Config group and module name must be a string");
         }
 
         if (strpos($group, '.') !== FALSE)
