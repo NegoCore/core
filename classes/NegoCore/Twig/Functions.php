@@ -23,6 +23,11 @@ class NegoCore_Twig_Functions {
     protected static $_classes = array();
 
     /**
+     * @var Twig_Config
+     */
+    protected static $_module_config;
+
+    /**
      * Get a Kohana & NegoCore context class
      *
      * @param string $class Name of class
@@ -45,5 +50,22 @@ class NegoCore_Twig_Functions {
         }
 
         return self::$_classes[$class];
+    }
+
+    // ----------------------------------------------------------------------
+
+    public static function get_config($group, $module = null)
+    {
+        // Kohana config
+        if ($module === null)
+            return Kohana::$config->load($group);
+
+        // Module config
+        if (self::$_module_config === null)
+        {
+            self::$_module_config = new Twig_Config();
+        }
+
+        return self::$_module_config->load($group, $module);
     }
 }

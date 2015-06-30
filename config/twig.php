@@ -48,7 +48,8 @@ return array(
         array('get_navigation', array('Navigation', 'get')),
         array('get_current_page', array('Navigation', 'get_current_page')),
         // Twig Functions
-        array('get_class', array('Twig_Functions', 'get_class'))
+        array('get_class', array('Twig_Functions', 'get_class')),
+        array('get_config', array('Twig_Functions', 'get_config'))
     ),
     'filters' => array(
         array('without', array('Twig_Filters', 'without'))

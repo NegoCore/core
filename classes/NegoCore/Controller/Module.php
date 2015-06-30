@@ -28,11 +28,6 @@ class NegoCore_Controller_Module extends Controller_Security {
     protected $_module_path;
 
     /**
-     * @var array Module config groups
-     */
-    protected $_module_config_groups = array();
-
-    /**
      * Before get module's directory
      */
     public function before()
@@ -74,48 +69,7 @@ class NegoCore_Controller_Module extends Controller_Security {
      */
     public function config($group)
     {
-        if (empty($group))
-        {
-            throw new Kohana_Exception("Need to specify a config group");
-        }
-
-        if ( ! is_string($group))
-        {
-            throw new Kohana_Exception("Config group must be a string");
-        }
-
-        if (strpos($group, '.') !== FALSE)
-        {
-            // Split the config group and path
-            list($group, $path) = explode('.', $group, 2);
-        }
-
-        if (isset($this->_module_config_groups[$group]))
-        {
-            if (isset($path))
-            {
-                return Arr::path($this->_module_config_groups[$group], $path, NULL, '.');
-            }
-
-            return $this->_module_config_groups[$group];
-        }
-
-        $config = array();
-
-        if ($file = $this->find_file('config', $group))
-        {
-            // Merge each file to the configuration array
-            $config = Arr::merge($config, Kohana::load($file));
-        }
-
-        $this->_module_config_groups[$group] = new Config_Group(Kohana::$config, $group, $config);
-
-        if (isset($path))
-        {
-            return Arr::path($config, $path, NULL, '.');
-        }
-
-        return $this->_module_config_groups[$group];
+        return Twig_Functions::get_config($group, $this->_module_name);
     }
 
     // ----------------------------------------------------------------------
