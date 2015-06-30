@@ -16,20 +16,6 @@
 class NegoCore_Core {
 
     /**
-     * Returns the filename of view.
-     *
-     * @param string $module Name of module
-     * @param string $view Name with directory of view
-     * @return string
-     */
-    public function module_view($module, $view)
-    {
-        return MODPATH.$module.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$view.'.twig';
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
      * @param array $options
      * @param string $select_text
      * @return array

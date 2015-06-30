@@ -116,4 +116,26 @@ class NegoCore_Twig_Functions {
             'id' => $id
         ));
     }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get module view file path
+     *
+     * @param string $module Module name
+     * @param string $view View name without extension
+     * @return string
+     * @throws Kohana_Exception
+     */
+    public static function get_module_view($module, $view)
+    {
+        // Load config once
+        static $ext;
+
+        if (empty($ext))
+            $ext = Kohana::$config->load('twig.loader.extension');
+
+        // Absolute path to view
+        return MODPATH.$module.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$view.'.'.$ext;
+    }
 }
