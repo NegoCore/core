@@ -16,27 +16,6 @@
 class NegoCore_Core {
 
     /**
-     * Call a class from Kohana or NegoCore since Twig view.
-     *
-     * @param $class
-     * @param $arguments
-     * @return mixed|null
-     */
-    public function __call($class, $arguments)
-    {
-        list($method, $args) = $arguments;
-
-        if (class_exists($class) && method_exists($class, $method))
-        {
-            return call_user_func_array(array($class, $method), $args);
-        }
-
-        return null;
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
      * Return a config group
      *
      * @param $group

@@ -56,9 +56,6 @@ class NegoCore_Controller_Template extends Controller_Module {
 
         if ($this->auto_render)
         {
-            // Add NegoCore Helper
-            $this->view->set_global('Core', new NegoCore());
-
             // Generate default filename
             if ($this->view->get_filename() === null)
             {

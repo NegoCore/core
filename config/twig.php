@@ -46,7 +46,9 @@ return array(
         array('get_form_error', array('Messages', 'form_error')),
         // Navigation
         array('get_navigation', array('Navigation', 'get')),
-        array('get_current_page', array('Navigation', 'get_current_page'))
+        array('get_current_page', array('Navigation', 'get_current_page')),
+        // Twig Functions
+        array('get_class', array('Twig_Functions', 'get_class'))
     ),
     'filters' => array(
         array('without', array('Twig_Filters', 'without'))
