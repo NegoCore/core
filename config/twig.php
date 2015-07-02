@@ -52,7 +52,8 @@ return array(
         array('get_config', array('Twig_Functions', 'get_config')),
         array('get_url', array('Twig_Functions', 'get_url')),
         array('get_backend_url', array('Twig_Functions', 'get_backend_url')),
-        array('get_module_view', array('Twig_Functions', 'get_module_view'))
+        array('get_module_view', array('Twig_Functions', 'get_module_view')),
+        array('get_fs_options', array('Twig_Functions', 'get_fs_options'))
     ),
     'filters' => array(
         array('without', array('Twig_Filters', 'without'))

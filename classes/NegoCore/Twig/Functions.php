@@ -138,4 +138,30 @@ class NegoCore_Twig_Functions {
         // Absolute path to view
         return MODPATH.$module.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$view.'.'.$ext;
     }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Parse form select options
+     *
+     * @param array $options Options list
+     * @param string $select_text
+     * @return array
+     */
+    public static function get_fs_options(array $options = array(), $select_text = 'Seleccionar...')
+    {
+        if ( ! isset($options[0]))
+        {
+            $_options = array(null => $select_text);
+
+            foreach ($options as $key => $value)
+            {
+                $_options[$key] = $value;
+            }
+
+            $options = $_options;
+        }
+
+        return $options;
+    }
 }

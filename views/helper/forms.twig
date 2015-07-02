@@ -1,4 +1,4 @@
-{# Field from froup #}
+{# group #}
 {% macro group(label, field_id, content, help) %}
     {% set field_name = field_id|replace({'field_': ''}) %}
     {% set error = get_form_error(field_name) %}
@@ -6,23 +6,23 @@
         <label for="{{ field_id }}" class="col-xs-2 control-label">{{ label }}</label>
         <div class="col-xs-10">
             {{ content|raw }}
-            <span class="help-block">{% if help is not null and error is null %}{{ help }}{% else %}{{ error }}{% endif %}</span>
+            {% if help is not null or error is not null %}<span class="help-block">{% if help is not null and error is null %}{{ help|raw }}{% else %}{{ error }}{% endif %}</span>{% endif %}
         </div>
     </div>
     <hr>
 {% endmacro %}
 
-{# Field input #}
+{# input #}
 {% macro input(label, name, value, attributes, type) %}
-    {% import _self as forms %}
+    {% import _self as form %}
     {% set field_id = 'field_' ~ name %}
     {% set attributes = {'type': type|default('text'), 'id': field_id, 'class': 'form-control'}|merge(attributes|default({})) %}
-    {{ forms.group(label, field_id, Core.Form('input', [name, value, attributes|without('help')]), attributes.help) }}
+    {{ form.group(label, field_id, get_class('Form').input(name, value, attributes|without('help')), attributes.help) }}
 {% endmacro %}
 
-{# Field input group #}
+{# input_group #}
 {% macro input_group(label, name, value, group, attributes, type) %}
-    {% import _self as forms %}
+    {% import _self as form %}
     {% set field_id = 'field_' ~ name %}
     {% set attributes = {'type': type|default('text'), 'id': field_id, 'class': 'form-control'}|merge(attributes|default({})) %}
     {% set group = group|merge(group|default({left: null, right: null})) %}
@@ -31,87 +31,114 @@
         {% if group.left is not null %}
             <div class="input-group-addon">{{ group.left }}</div>
         {% endif %}
-        {{ Core.Form('input', [name, value, attributes|without('help')]) }}
+        {{ get_class('Form').input(name, value, attributes|without('help'))|raw }}
         {% if group.right is not null %}
             <div class="input-group-addon">{{ group.right }}</div>
         {% endif %}
     </div>
     {% endset %}
-    {{ forms.group(label, field_id, input_group, attributes.help) }}
+    {{ form.group(label, field_id, input_group, attributes.help) }}
 {% endmacro %}
 
-{# Field select #}
-{% macro select(label, name, options, selected, attributes, select_text) %}
-    {% import _self as forms %}
-    {% set field_id = 'field_' ~ name %}
-    {% set attributes = {'id': field_id, 'class': 'form-control'}|merge(attributes|default({})) %}
-    {{ forms.group(label, field_id, Core.Form('select', [name, Core.forms_get_options(options, select_text|default('Seleccionar..')), selected, attributes|without('help')]), attributes.help) }}
-{% endmacro %}
-
-{# Field textarea #}
+{# textarea #}
 {% macro textarea(label, name, body, attributes, double_encode) %}
-    {% import _self as forms %}
+    {% import _self as form %}
     {% set field_id = 'field_' ~ name %}
     {% set attributes = {'id': field_id, 'class': 'form-control', 'rows': 3}|merge(attributes|default({})) %}
-    {{ forms.group(label, field_id, Core.Form('textarea', [name, body, attributes|without('help'), double_encode|default(true)]), attributes.help) }}
+    {{ form.group(label, field_id, get_class('Form').textarea(name, body, attributes|without('help'), double_encode|default(true)), attributes.help) }}
 {% endmacro %}
 
-{# Options list [0: name, 1: value, 2: checked, 3: label, 4: attributes] #}
-{% macro options_list(label, type, options) %}
-    {% import _self as forms %}
+{# select #}
+{% macro select(label, name, options, selected, attributes, select_text) %}
+    {% import _self as form %}
+    {% set field_id = 'field_' ~ name %}
+    {% set attributes = {'id': field_id, 'class': 'form-control'}|merge(attributes|default({})) %}
+    {{ form.group(label, field_id, get_class('Form').select(name, get_fs_options(options, select_text|default('Seleccionar..')), selected, attributes|without('help')), attributes.help) }}
+{% endmacro %}
+
+{# _options_list [[label, name, value, checked, attributes]] #}
+{% macro _option_list(label, type, options, help) %}
+    {% import _self as form %}
     {% set html_options = '' %}
     {% for key, option in options %}
-        {% set field_id = 'field_' ~ option[0] ~ '_' ~ option[1] %}
+        {% set field_id = 'field_' ~ option[1] ~ '_' ~ option[2] %}
         {% set attributes = {'id': field_id }|merge(option[4]|default({})) %}
         {% set html_option %}
-        <div class="{{ type }}"><label>{{ Core.Form(type, [option[0], option[1], option[2], attributes]) }} {{ option[3]|default('&nbsp;') }}</label></div>
+        <div class="{{ type }}"><label>{{ attribute(get_class('Form'), type, [option[1], option[2], option[3], attributes])|raw }} {{ option[0]|default('&nbsp;') }}</label></div>
         {% endset %}
         {% set html_options = html_options ~ html_option %}
     {% endfor %}
-    {{ forms.group(label, null, html_options) }}
+    {{ form.group(label, null, html_options, help) }}
 {% endmacro %}
 
-{# Option field #}
+{# option #}
 {% macro option(type, label, name, value, checked, attributes) %}
-    {% import _self as forms %}
+    {% import _self as form %}
     {% set field_id = 'field_' ~ name %}
     {% set attributes = {'id': field_id}|merge(attributes|default({})) %}
     {% set html_input %}
-    <div class="{{ type }}"><label>{{ Core.Form(type, [name, value, checked, attributes|without('help')]) }} {{ label }}</label></div>
+    <div class="{{ type }}"><label>{{ attribute(get_class('Form'), type, [name, value, checked, attributes|without('help')])|raw }} {{ label }}</label></div>
     {% endset %}
-    {{ forms.group(null, field_id, html_input, attributes.help) }}
+    {{ form.group(null, field_id, html_input, attributes.help) }}
 {% endmacro %}
 
-{# Checkbox input #}
+{# checkbox #}
 {% macro checkbox(label, name, value, checked, attributes) %}
-    {% import _self as forms %}
-    {{ forms.option('checkbox', label, name, value, checked, attributes|without('help')) }}
+    {% import _self as form %}
+    {{ form.option('checkbox', label, name, value, checked, attributes) }}
 {% endmacro %}
 
-{# Radio input #}
-{% macro radio(label, name, value, checked, attributes) %}
-    {% import _self as forms %}
-    {{ forms.option('radio', label, name, value, checked, attributes|without('help')) }}
+{# radios #}
+{% macro radios(label, options, help) %}
+    {% import _self as form %}
+    {{ form._option_list(label, 'radio', options, help) }}
 {% endmacro %}
 
-{# Simple button #}
-{% macro button(label, icon, class, title) %}
-    <button type="button" class="btn {{ class|default('btn-primary') }}" data-toggle="tooltip" title="{{ title }}"><i class="fa fa-{{ icon }}"></i> {{ label }}</button>
+{# checkboxes #}
+{% macro checkboxes(label, options, help) %}
+    {% import _self as form %}
+    {{ form._option_list(label, 'checkbox', options, help) }}
 {% endmacro %}
 
-{# Link button #}
-{% macro link_button(url, label, icon, class, title) %}
-    <a href="{{ url|default('#') }}" class="btn {{ class|default('btn-default') }}" data-toggle="tooltip" title="{{ title }}"><i class="fa fa-{{ icon }}"></i>{{ label }}</a>
+{# button #}
+{% macro button(text, icon, attributes) %}
+    {% if attributes is iterable %}
+        {% set attributes = attributes|merge({class: 'btn ' ~ attributes.class|default('btn-default')}) %}
+    {% else %}
+        {% set attributes = {}|merge({class: 'btn '~ attributes|default('btn-default')}) %}
+    {% endif %}
+    {% if icon is not null %}{% set text %}<i class="{{ icon }}"></i> {{ text }}{% endset %}{% endif %}
+    {% if attributes.href is not null %}
+        {{ get_class('HTML').anchor(attributes.href, text, attributes)|raw }}
+    {% else %}
+        {{ get_class('Form').button(null, text, attributes)|raw }}
+    {% endif %}
 {% endmacro %}
 
-{# Submit button #}
-{% macro submit_buttons(label, not_cancel, class) %}
+{# link_button #}
+{% macro link_button(url, text, icon, attributes) %}
+    {% import _self as form %}
+    {% set attributes = {href: url}|merge(attributes|default({})) %}
+    {{ form.button(text, icon, attributes) }}
+{% endmacro %}
+
+{# submit #}
+{% macro submit(text, class, cancel) %}
+    {% import _self as form %}
     <div class="form-group">
-        <div class="col-xs-4 col-xs-offset-2">
-            {% if not_cancel is null %}
-                <button type="button" class="btn btn-default" onclick="history.{% if get_form_error() is not null %}go(-2);{% else %}back();{% endif %} return false;">Cancelar</button>
+        <div class="col-xs-10 col-xs-offset-2">
+            {% if class is iterable %}
+                {% set class = class|merge({type: 'submit', class:class.class|default('btn-primary')}) %}
+            {% else %}
+                {% set class = {type: 'submit', class: class|default('btn-primary')} %}
             {% endif %}
-            <button type="submit" class="btn {{ class|default('btn-primary') }}">{{ label }}</button>
+            {{ form.button(text, class.icon|default(null), class|without('icon')) }}
+            {% if cancel is null or cancel is iterable %}
+                {% if cancel.href is null %}
+                    {% set onclick %}history.{% if get_form_error() == true %}go(-2);{% else %}back();{% endif %} return false;{% endset %}
+                {% endif %}
+                {{ form.link_button(cancel.href|default('#'), cancel.text|default('Cancelar'), cancel.icon|default(null), {onclick: onclick}|merge(cancel|default({})|without(['text', 'icon']))) }}
+            {% endif %}
         </div>
     </div>
 {% endmacro %}
