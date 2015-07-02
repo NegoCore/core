@@ -113,7 +113,7 @@ abstract class NegoCore_Navigation_Abstract {
         {
             foreach ($_buttons as $button)
             {
-                $this->_buttons[$uri][] = Navigation_Page::factory($button);
+                $this->_buttons[trim($uri, '/')][] = Navigation_Page::factory($button);
             }
         }
     }
