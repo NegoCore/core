@@ -13,6 +13,11 @@
 class NegoCore_Controller_Backend extends Controller_Template {
 
     /**
+     * @var bool Backend controllers required authentication¡
+     */
+    public $auth_required = true;
+
+    /**
      * Configure Backend Controllers
      */
     public function before()
