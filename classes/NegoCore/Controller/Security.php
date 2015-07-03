@@ -46,7 +46,7 @@ class NegoCore_Controller_Security extends Controller_System {
         parent::before();
 
         // Check public actions
-        if ($this->auth_required === true && ! Auth::instance()->logged_in() && ! in_array($this->request->action(), $this->public_actions))
+        if ($this->auth_required === true && ! Auth::is_logged_in() && ! in_array($this->request->action(), $this->public_actions))
         {
             $this->_deny_access();
         }
@@ -68,7 +68,7 @@ class NegoCore_Controller_Security extends Controller_System {
      */
     protected function _deny_access($message = null)
     {
-        if (Auth::instance()->logged_in() || $this->request->is_ajax())
+        if (Auth::is_logged_in() || $this->request->is_ajax())
         {
             if ($message === null)
             {
