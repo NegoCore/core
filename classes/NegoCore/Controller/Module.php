@@ -11,9 +11,7 @@
 // --------------------------------------------------------------------------------
 
 /**
- * Class Controller_Module
- *
- * Module controller
+ * Class NegoCore_Controller_Module
  */
 class NegoCore_Controller_Module extends Controller_Security {
 
@@ -21,11 +19,6 @@ class NegoCore_Controller_Module extends Controller_Security {
      * @var string Module directory name
      */
     protected $_module_name;
-
-    /**
-     * @var string Module path
-     */
-    protected $_module_path;
 
     /**
      * Before get module's directory
@@ -36,26 +29,11 @@ class NegoCore_Controller_Module extends Controller_Security {
 
         // Get module's directory
         $class = new ReflectionClass(get_called_class());
-        $module_path = explode('classes/', $class->getFileName());
-        $module_path = $module_path[0];
-
-        // Assign module path
-        $this->_module_path = $module_path;
+        $module_path = explode('/classes', $class->getFileName());
+        $module_path = explode('/', $module_path[0]);
 
         // Module directory name
-        $this->_module_name = trim(str_replace(MODPATH, '', $module_path), '/');
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
-     * Get module path
-     *
-     * @return string
-     */
-    public function get_module_path()
-    {
-        return $this->_module_path;
+        $this->_module_name = end($module_path);
     }
 
     // ----------------------------------------------------------------------
@@ -101,13 +79,14 @@ class NegoCore_Controller_Module extends Controller_Security {
             $ext = '';
         }
 
-        // Create a partial path of the filename
-        $filename = $dir.DIRECTORY_SEPARATOR.$file.$ext;
+        // Create path of the filename
+        $filename = Kohana::get_module_path($this->_module_name);
+        $filename .= $dir.DIRECTORY_SEPARATOR.$file.$ext;
 
         $found = false;
-        if (is_file($this->_module_path.$filename))
+        if (is_file($filename))
         {
-            $found = $this->_module_path.$filename;
+            $found = $filename;
         }
 
         return $found;

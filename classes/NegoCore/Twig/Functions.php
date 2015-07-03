@@ -136,7 +136,7 @@ class NegoCore_Twig_Functions {
             $ext = Kohana::$config->load('twig.loader.extension');
 
         // Absolute path to view
-        return MODPATH.$module.DIRECTORY_SEPARATOR.'views'.DIRECTORY_SEPARATOR.$view.'.'.$ext;
+        return Kohana::get_module_path($module).'views'.DIRECTORY_SEPARATOR.$view.'.'.$ext;
     }
 
     // ----------------------------------------------------------------------

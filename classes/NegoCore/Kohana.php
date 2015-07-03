@@ -88,4 +88,17 @@ class NegoCore_Kohana extends Kohana_Core {
 
         return Kohana::$_modules;
     }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get the module path
+     *
+     * @param string $module Module name
+     * @return string
+     */
+    public static function get_module_path($module)
+    {
+        return isset(self::$_modules[$module]) ? self::$_modules[$module] : null;
+    }
 }
