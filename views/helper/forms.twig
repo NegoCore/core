@@ -3,7 +3,7 @@
     {% set field_name = field_id|replace({'field_': ''}) %}
     {% set error = get_form_error(field_name) %}
     <div class="form-group{% if error is not null %} has-error{% endif %}">
-        <label for="{{ field_id }}" class="col-xs-2 control-label">{{ label }}</label>
+        <label for="{{ field_id }}" class="col-xs-2 control-label">{{ label|raw }}</label>
         <div class="col-xs-10">
             {{ content|raw }}
             {% if help is not null or error is not null %}<span class="help-block">{% if help is not null and error is null %}{{ help|raw }}{% else %}{{ error }}{% endif %}</span>{% endif %}
@@ -64,7 +64,7 @@
         {% set field_id = 'field_' ~ option[1] ~ '_' ~ option[2] %}
         {% set attributes = {'id': field_id }|merge(option[4]|default({})) %}
         {% set html_option %}
-        <div class="{{ type }}"><label>{{ attribute(get_class('Form'), type, [option[1], option[2], option[3], attributes])|raw }} {{ option[0]|default('&nbsp;') }}</label></div>
+        <div class="{{ type }}"><label>{{ attribute(get_class('Form'), type, [option[1], option[2], option[3], attributes])|raw }} {{ option[0]|raw|default('&nbsp;') }}</label></div>
         {% endset %}
         {% set html_options = html_options ~ html_option %}
     {% endfor %}
@@ -77,7 +77,7 @@
     {% set field_id = 'field_' ~ name %}
     {% set attributes = {'id': field_id}|merge(attributes|default({})) %}
     {% set html_input %}
-    <div class="{{ type }}"><label>{{ attribute(get_class('Form'), type, [name, value, checked, attributes|without('help')])|raw }} {{ label }}</label></div>
+    <div class="{{ type }}"><label>{{ attribute(get_class('Form'), type, [name, value, checked, attributes|without('help')])|raw }} {{ label|raw }}</label></div>
     {% endset %}
     {{ form.group(null, field_id, html_input, attributes.help) }}
 {% endmacro %}
