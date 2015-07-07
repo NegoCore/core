@@ -29,8 +29,8 @@ class NegoCore_Controller_Module extends Controller_Security {
 
         // Get module's directory
         $class = new ReflectionClass(get_called_class());
-        $module_path = explode('/classes', $class->getFileName());
-        $module_path = explode('/', $module_path[0]);
+        $module_path = explode(DIRECTORY_SEPARATOR.'classes', $class->getFileName());
+        $module_path = explode(DIRECTORY_SEPARATOR, $module_path[0]);
 
         // Module directory name
         $this->_module_name = end($module_path);
