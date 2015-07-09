@@ -56,7 +56,7 @@ class NegoCore_Assets {
         }
 
         return self::$_css[$handle] = array(
-            'src' => strpos($src, '//') !== false ? $src : URL::site(($module !== null ? 'modules/'.$module : 'application') . '/assets/css/' . $src),
+            'src' => Assets::get_url($src, 'css', $module),
             'deps' => (array) $deps,
             'attrs' => $attributes,
             'handle' => $handle,
@@ -151,7 +151,7 @@ class NegoCore_Assets {
         }
 
         return self::$_js[$handle] = array(
-            'src' => strpos($src, '//') !== false ? $src : URL::site(($module !== null ? 'modules/'.$module : 'application') . '/assets/js/' . $src),
+            'src' => Assets::get_url($src, 'js', $module),
             'deps' => (array) $deps,
             'footer' => (bool) $footer,
             'handle' => $handle,
@@ -270,7 +270,7 @@ class NegoCore_Assets {
         }
 
         // File URL
-        $file = URL::site(($module !== null ? $module : 'application').'/assets/img/' . $file);
+        $file = Assets::get_url($file, 'img', $module);
 
         // HTML Tag?
         if ($html == true)
@@ -334,6 +334,52 @@ class NegoCore_Assets {
         }
     }
 
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get assets URL
+     *
+     * @param string $src Source name
+     * @param string $type Type of asset
+     * @param string $module Module name
+     * @return string
+     * @throws Kohana_Exception
+     */
+    public static function get_url($src = null, $type = null, $module = null)
+    {
+        static $_config;
+        if ($_config === null)
+        {
+            $_config = Kohana::$config->load('assets');
+        }
+
+        // Assets URL
+        $url = $_config['url'];
+
+        // Only the Assets URL
+        if ($src === null)
+            return $url;
+
+        // Trim
+        $url = trim($url, '/').'/';
+
+        // Source is external
+        if (strpos($src, '//') !== false)
+            return $src;
+
+        // WebApp Asset
+        if (strpos($src, 'webapp') !== false)
+            return WebApp::get_url($src, $module);
+
+        // Module or Application path
+        if ($module !== null)
+             $url .=  $_config['mod_path'].'/'.$module;
+        else
+            $url .= $_config['app_path'];
+
+        //
+        return $url.'/assets/'.$type.'/'.$src;
+    }
     // ----------------------------------------------------------------------
 
     /**
