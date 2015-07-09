@@ -29,7 +29,7 @@ class NegoCore_Controller_Backend extends Controller_Template {
 
         // ----------------------------------------------------------------------
         // Style
-        Assets::css('global', 'backend.css');
+        /*Assets::css('global', 'backend.css');
 
         // Scripts
         Assets::js('jquery', 'lib/jquery.min.js');
@@ -38,7 +38,7 @@ class NegoCore_Controller_Backend extends Controller_Template {
         Assets::js('core', 'lib/core.js', array('jquery', 'bootstrap'));
 
         // WebApp Boot library
-        Assets::js('webapp', 'webapp/init.js');
+        Assets::js('webapp', 'webapp/init.js');*/
 
         // Title
         Document::title('Panel de control');
@@ -46,7 +46,7 @@ class NegoCore_Controller_Backend extends Controller_Template {
         // Configure WebApp init data
         WebApp::set_init_data(array(
             'is_backend' => $this->is_backend(),
-            'backend_url' => '/' . BACKEND_DIR_NAME . '/',
+            'backend_url' => URL::backend(),
             'base_url' => URL::site()
         ));
     }
