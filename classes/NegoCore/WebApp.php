@@ -22,21 +22,77 @@ class NegoCore_WebApp {
     protected static $_init_data = array();
 
     /**
-     * Boot module
-     * @var string
+     * @var string Name of boot module
      */
     protected static $_boot_module;
 
     /**
-     * Module path
-     * @var string
+     * @var Config_Group WebApp configuration.
      */
-    protected static $_module_path;
+    protected static $_config;
 
     /**
-     * Set a data for init module.
+     * Initialize WebApp & returns a JavaScript var with all required data
      *
-     * @param string $name
+     * @return string
+     */
+    public static function init()
+    {
+        // Load Assets
+        if ($scripts = WebApp::get_config('js'))
+        {
+            foreach ($scripts as $script)
+            {
+                call_user_func_array(array('Assets', 'js'), $script);
+            }
+        }
+
+        // WebApp
+        $WebApp = array();
+
+        // Init Data
+        $WebApp['data'] = self::get_init_data(false);
+
+        // Boot module
+        $WebApp['module'] = self::get_boot_module();
+
+        // RequireJS Config
+        $WebApp['requirejs'] = self::_get_requirejs_config();
+
+        // WebApp Inputs
+        $output = '<script type="application/javascript">var WebApp = ';
+        $output .= json_encode($WebApp);
+        $output .= ';</script>';
+
+        return $output;
+    }
+
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get WebApp configuration
+     *
+     * @param string $key Config name
+     * @return Config_Group|mixed
+     * @throws Kohana_Exception
+     */
+    public static function get_config($key = null)
+    {
+        if (self::$_config === null)
+        {
+            self::$_config = Kohana::$config->load('webapp');
+        }
+
+        return ($key === null) ? self::$_config : self::$_config->get($key);
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Set init data for WebApp
+     *
+     * @param string $name Data name
      * @param mixed $value
      */
     public static function set_init_data($name, $value = null)
@@ -48,7 +104,7 @@ class NegoCore_WebApp {
 
         foreach ($name as $key => $value)
         {
-            WebApp::$_init_data[$key] = $value;
+            self::$_init_data[$key] = $value;
         }
     }
 
@@ -62,7 +118,7 @@ class NegoCore_WebApp {
      */
     public static function get_init_data($json = true)
     {
-        return $json !== true ? WebApp::$_init_data : json_encode(WebApp::$_init_data);
+        return $json !== true ? self::$_init_data : json_encode(self::$_init_data);
     }
 
     // ----------------------------------------------------------------------
@@ -75,30 +131,81 @@ class NegoCore_WebApp {
      */
     public static function set_boot_module($module, $action = 'index')
     {
-        WebApp::$_boot_module = 'modules/' . $module . '/webapp/boot/' . $action;
+        $boot_module = parse_url(WebApp::get_url('webapp/boot/'.$action, $module));
+
+        self::$_boot_module = trim($boot_module['path'], '/');
     }
 
     // ----------------------------------------------------------------------
 
     /**
-     * Get module name
+     * Get boot module name
      *
      * @return string
      */
     public static function get_boot_module()
     {
-        return WebApp::$_boot_module;
+        return self::$_boot_module;
     }
 
     // ----------------------------------------------------------------------
 
     /**
-     * Get module path
+     * Get WebApp URL
      *
+     * @param string $src Source name
+     * @param string $module Module name
      * @return string
      */
-    public static function get_module_path()
+    public static function get_url($src = null, $module = null)
     {
-        return URL::site();
+        // Base URL
+        $url = WebApp::get_config('url');
+
+        // Only the WebApp URL
+        if ($src === null)
+            return $url;
+
+        // Trim /
+        $url = trim($url, '/').'/';
+
+        // Module or Application
+        if ($module !== null)
+            $url .= WebApp::get_config('mod_path').'/'.$module;
+        else
+            $url .= WebApp::get_config('app_path');
+
+        //
+        return $url.'/'.$src;
+    }
+
+    // ----------------------------------------------------------------------
+
+    protected static function _get_requirejs_config()
+    {
+        // Main configuration
+        $config = WebApp::get_config('requirejs');
+
+        if (empty($config) || ! isset($config['paths']))
+        {
+            throw new NegoCore_Exception('Configuration for RequireJS is corrupted in WebApp.');
+        }
+
+        // Set WebApp Paths
+        $config['paths']['modules'] = rtrim(WebApp::get_url('', ''), '/');
+        $config['paths']['webapp'] = WebApp::get_url('webapp');
+        $config['paths']['plugin'] = WebApp::get_url('webapp/plugin');
+        $config['paths']['helper'] = WebApp::get_url('webapp/helper');
+        $config['paths']['core'] = WebApp::get_url('webapp/core');
+        $config['paths']['lib'] = WebApp::get_url('webapp/lib');
+
+        // WebApp files is loaded every request
+        if (Kohana::$environment === Kohana::DEVELOPMENT)
+        {
+            $config['urlArgs'] = 'v='.time();
+        }
+
+        // Return as JSON
+        return $config;
     }
 }
