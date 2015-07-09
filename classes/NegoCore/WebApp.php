@@ -194,10 +194,8 @@ class NegoCore_WebApp {
         // Set WebApp Paths
         $config['paths']['modules'] = rtrim(WebApp::get_url('', ''), '/');
         $config['paths']['webapp'] = WebApp::get_url('webapp');
-        $config['paths']['plugin'] = WebApp::get_url('webapp/plugin');
-        $config['paths']['helper'] = WebApp::get_url('webapp/helper');
-        $config['paths']['core'] = WebApp::get_url('webapp/core');
-        $config['paths']['lib'] = WebApp::get_url('webapp/lib');
+        $config['paths']['core'] = WebApp::get_url('webapp/core/lib');
+        $config['paths']['mixin'] = WebApp::get_url('webapp/mixins');
 
         // WebApp files is loaded every request
         if (Kohana::$environment === Kohana::DEVELOPMENT)
