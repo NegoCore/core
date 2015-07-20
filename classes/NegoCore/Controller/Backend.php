@@ -24,24 +24,11 @@ class NegoCore_Controller_Backend extends Controller_Template {
     {
         parent::before();
 
+        // Configure Backend
+        require_once APPPATH.'config'.DIRECTORY_SEPARATOR.'backend.php';
+
         // Navigation init
         Navigation::init(Kohana::$config->load('sitemap')->as_array());
-
-        // ----------------------------------------------------------------------
-        // Style
-        /*Assets::css('global', 'backend.css');
-
-        // Scripts
-        Assets::js('jquery', 'lib/jquery.min.js');
-        Assets::js('require', 'lib/require.min.js');
-        Assets::js('bootstrap', 'lib/bootstrap.min.js', 'jquery');
-        Assets::js('core', 'lib/core.js', array('jquery', 'bootstrap'));
-
-        // WebApp Boot library
-        Assets::js('webapp', 'webapp/init.js');*/
-
-        // Title
-        Document::title('Panel de control');
 
         // Configure WebApp init data
         WebApp::set_init_data(array(
