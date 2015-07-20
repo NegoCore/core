@@ -11,6 +11,23 @@
 // --------------------------------------------------------------------------------
 
 /**
- * Class URL
+ * Class NegoCore_ORM
  */
-class NegoCore_ORM extends Kohana_ORM {}
+class NegoCore_ORM extends Kohana_ORM {
+
+    /**
+     * @var array Created column definition
+     */
+    protected $_created_column = array(
+        'column' => 'created_at',
+        'format' => true
+    );
+
+    /**
+     * @var array Updated column definition
+     */
+    protected $_updated_column = array(
+        'column' => 'updated_at',
+        'format' => true
+    );
+}
