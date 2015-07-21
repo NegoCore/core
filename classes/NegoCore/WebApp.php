@@ -194,6 +194,7 @@ class NegoCore_WebApp {
         // Set WebApp Paths
         $config['paths']['modules'] = rtrim(WebApp::get_url('', ''), '/');
         $config['paths']['webapp'] = WebApp::get_url('webapp');
+        $config['paths']['bootstrap'] = WebApp::get_url('webapp/bootstrap');
         $config['paths']['core'] = WebApp::get_url('webapp/core/lib');
         $config['paths']['mixin'] = WebApp::get_url('webapp/mixins');
 
