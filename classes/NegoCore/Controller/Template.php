@@ -74,6 +74,21 @@ class NegoCore_Controller_Template extends Controller_Module {
     // ----------------------------------------------------------------------
 
     /**
+     * Change view for current action controller
+     *
+     * @param string $view
+     */
+    public function set_view($view)
+    {
+        if ($this->auto_render)
+        {
+            $this->view->set_filename($this->get_view($view));
+        }
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
      * @return string
      * @throws Kohana_Exception
      * @throws Twig_Error_Loader

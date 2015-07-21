@@ -91,4 +91,17 @@ class NegoCore_Controller_Module extends Controller_Security {
 
         return $found;
     }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get current controller view path
+     *
+     * @param string $view
+     * @return string
+     */
+    public function get_view($view)
+    {
+        return Twig_Functions::get_module_view($this->_module_name, ($this->is_backend() ? 'backend/' : '').$view);
+    }
 }
