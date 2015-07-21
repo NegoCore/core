@@ -55,7 +55,7 @@ return array(
         array('get_module_view', array('Twig_Functions', 'get_module_view')),
         array('get_fs_options', array('Twig_Functions', 'get_fs_options')),
         // WebApp
-        array('webapp_init', array('WebApp', 'init'))
+        array('webapp_init', array('WebApp', 'init'), array('is_safe' => array('html')))
     ),
     'filters' => array(
         array('without', array('Twig_Filters', 'without'))
