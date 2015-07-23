@@ -133,7 +133,7 @@ class NegoCore_WebApp {
     {
         $boot_module = parse_url(WebApp::get_url('webapp/boot/'.$action, $module));
 
-        self::$_boot_module = trim($boot_module['path'], '/');
+        self::$_boot_module = $module === null ? $boot_module['path'] : trim($boot_module['path'], '/');
     }
 
     // ----------------------------------------------------------------------
@@ -181,6 +181,12 @@ class NegoCore_WebApp {
 
     // ----------------------------------------------------------------------
 
+    /**
+     * Perform RequireJS config
+     *
+     * @return Config_Group|mixed
+     * @throws NegoCore_Exception
+     */
     protected static function _get_requirejs_config()
     {
         // Main configuration
