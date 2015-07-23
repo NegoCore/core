@@ -131,9 +131,9 @@ class NegoCore_WebApp {
      */
     public static function set_boot_module($module, $action = 'index')
     {
-        $boot_module = parse_url(WebApp::get_url('webapp/boot/'.$action, $module));
+        $boot_module = $module !== null ? parse_url(WebApp::get_url('webapp/boot/'.$action, $module)) : array('path' => 'boot/'.$action);
 
-        self::$_boot_module = $module === null ? $boot_module['path'] : trim($boot_module['path'], '/');
+        self::$_boot_module = trim($boot_module['path'], '/');
     }
 
     // ----------------------------------------------------------------------
