@@ -21,6 +21,11 @@ class NegoCore_Controller_Module extends Controller_Security {
     protected $_module_name;
 
     /**
+     * @var bool Auto-load WebApp module
+     */
+    public $auto_load_webapp = true;
+
+    /**
      * Before get module's directory
      */
     public function before()
@@ -34,6 +39,34 @@ class NegoCore_Controller_Module extends Controller_Security {
 
         // Module directory name
         $this->_module_name = end($module_path);
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * After, auto-load WebApp module
+     */
+    public function after()
+    {
+        parent::after();
+
+        if ($this->auto_load_webapp && WebApp::get_boot_module() === null)
+        {
+            WebApp::set_boot_module($this->_module_name, $this->request->action());
+        }
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Set WebApp boot module
+     *
+     * @param string $action FlightJS module name.
+     * @param string|bool $module Module name, if is FALSE then load from 'webapp' directory
+     */
+    public function set_webapp_module($action, $module = null)
+    {
+        WebApp::set_boot_module($module === null ? $this->_module_name : ($module === false ? null : $module), $action);
     }
 
     // ----------------------------------------------------------------------
