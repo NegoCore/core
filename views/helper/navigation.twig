@@ -4,7 +4,7 @@
         {% for nc_section in nc_nav.get_menu() %}
         <li class="{% if nc_section.get_pages()|length > 0 %}dropdown {% endif %}{% if nc_section.is_active() %} active{% endif %}">
             <a{% if nc_section.get_url() is null %} onclick="return false"{% else %} href="{{ nc_section.get_url() }}"{% endif %}>
-                <i class="fa fa-{{ nc_section.icon }}"></i>
+                <i class="{{ nc_section.icon }}"></i>
                 <span>{{ nc_section.get_name() }}</span>
             </a>
             {% if nc_section.get_pages()|length > 0 %}
@@ -12,7 +12,7 @@
                 {% for nc_item in nc_section.get_pages() %}
                     <li>
                         <a href="{{ nc_item.get_url() }}">
-                            <i class="fa fa-{{ nc_item.icon }}"></i>
+                            <i class="{{ nc_item.icon }}"></i>
                             <span>{{ nc_item.get_name() }}</span>
                         </a>
                     </li>
