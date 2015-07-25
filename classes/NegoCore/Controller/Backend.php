@@ -10,7 +10,7 @@
 
 // --------------------------------------------------------------------------------
 
-class NegoCore_Controller_Backend extends Controller_Template {
+class NegoCore_Controller_Backend extends Controller_CRUD {
 
     /**
      * @var bool Backend controllers required authentication¡
@@ -32,7 +32,7 @@ class NegoCore_Controller_Backend extends Controller_Template {
 
         // Configure WebApp init data
         WebApp::set_init_data(array(
-            'is_backend' => $this->is_backend(),
+            'is_backend' => true,
             'backend_url' => URL::backend(),
             'base_url' => URL::site()
         ));
