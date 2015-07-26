@@ -14,7 +14,7 @@
 
 {# hidden #}
 {% macro hidden(name, value, attributes) %}
-    {{ get_class('Form').hidden(name, value, attributes) }}
+    {{ get_class('Form').hidden(name, value, attributes)|raw }}
 {% endmacro %}
 
 {# input #}
