@@ -131,7 +131,7 @@
 {% macro submit(text, class, cancel) %}
     {% import _self as form %}
     <div class="form-group">
-        <div class="col-xs-10 col-xs-offset-2">
+        <div class="col-sm-10 col-sm-offset-2">
             {% if class is iterable %}
                 {% set class = class|merge({type: 'submit', class:class.class|default('btn-primary')}) %}
             {% else %}
