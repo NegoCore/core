@@ -3,8 +3,8 @@
     {% set field_name = field_id|replace({'field_': ''}) %}
     {% set error = get_form_error(field_name) %}
     <div class="form-group{% if error is not null %} has-error{% endif %}">
-        <label for="{{ field_id }}" class="col-xs-2 control-label">{{ label|raw }}</label>
-        <div class="col-xs-10">
+        <label for="{{ field_id }}" class="col-sm-2 control-label">{{ label|raw }}</label>
+        <div class="col-sm-10">
             {{ content|raw }}
             {% if help is not null or error is not null %}<span class="help-block">{% if help is not null and error is null %}{{ help|raw }}{% else %}{{ error }}{% endif %}</span>{% endif %}
         </div>
