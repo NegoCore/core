@@ -27,11 +27,6 @@ class NegoCore_Controller_System extends Controller {
      */
     public function action_default()
     {
-        // Is an ajax request
-        if ($this->request->is_ajax())
-            $this->go_home();
-
-        // Show message
         $this->response->body('<h1>Welcome</h1> This is a default controller for NegoCore, you\'re now ready to develop.<br><br>Have fun!');
     }
 
