@@ -47,6 +47,11 @@ return array(
         // Navigation
         array('get_navigation', array('Navigation', 'get')),
         array('get_current_page', array('Navigation', 'get_current_page')),
+        // Table
+        array('table_th', array('Table', 'th'), array('is_safe' => array('html'))),
+        array('table_th_actions', array('Table', 'th_actions'), array('is_safe' => array('html'))),
+        array('table_actions', array('Table', 'actions'), array('is_safe' => array('html'))),
+        array('table_action', array('Table', 'action'), array('is_safe' => array('html'))),
         // Twig Functions
         array('get_class', array('Twig_Functions', 'get_class')),
         array('get_config', array('Twig_Functions', 'get_config')),
