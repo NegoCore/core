@@ -116,7 +116,7 @@
     {% if attributes.href is not null %}
         {{ get_class('HTML').anchor(attributes.href, text, attributes)|raw }}
     {% else %}
-        {{ get_class('Form').button(null, text, attributes|merge({type: 'button'}))|raw }}
+        {{ get_class('Form').button(null, text, {type: 'button'}|merge(attributes))|raw }}
     {% endif %}
 {% endmacro %}
 
