@@ -245,12 +245,18 @@ abstract class NegoCore_Navigation_Abstract {
     /**
      * Get section URL
      *
+     * @param int $id Resource ID
      * @return string
      */
-    public function get_url()
+    public function get_url($id = null)
     {
         $url = Arr::get($this->_params, 'url');
 
-        return $url !== null ? URL::site($url) : $url;
+        if ($url === null)
+        {
+            return '#';
+        }
+
+        return strtr(URL::site($url), array('<id>', $id));
     }
 }

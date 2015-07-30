@@ -3,7 +3,7 @@
 {% set nc_page_buttons = nc_page.get_buttons() %}
 {% if nc_page_buttons|length > 0 %}
     {% for nc_item in nc_page_buttons %}
-    <a href="{{ nc_item.get_url() }}" title="{{ nc_item.get_title() }}" class="btn btn-{{ nc_item.class }}"><i class="fa fa-{{ nc_item.icon }}"></i> {{ nc_item.get_name() }}</a>
+    <a href="{{ nc_item.get_url(page_object_id) }}"{% if nc_item.get_title() is not null %} title="{{ nc_item.get_title() }}" data-toggle="tooltip"{% endif %} class="btn {{ nc_item.class }}"><i class="{{ nc_item.icon }}"></i> {{ nc_item.get_name() }}</a>
     {% endfor %}
 {% endif %}
 {% endif %}
