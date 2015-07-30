@@ -214,7 +214,7 @@ abstract class NegoCore_Navigation_Abstract {
      */
     public function get_name()
     {
-        return __(Arr::get($this->_params, 'name'));
+        return __(Arr::get($this->_params, 'name', $this->get_title()));
     }
 
     // ----------------------------------------------------------------------
@@ -225,7 +225,7 @@ abstract class NegoCore_Navigation_Abstract {
      */
     public function get_title()
     {
-        return __(Arr::get($this->_params, 'title', $this->get_name()));
+        return __(Arr::get($this->_params, 'title'));
     }
 
     // ----------------------------------------------------------------------
@@ -257,6 +257,6 @@ abstract class NegoCore_Navigation_Abstract {
             return '#';
         }
 
-        return strtr(URL::site($url), array('<id>', $id));
+        return URL::site(strtr($url, array('<id>', $id)));
     }
 }
