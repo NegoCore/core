@@ -33,6 +33,7 @@ class NegoCore_Controller_Backend extends Controller_CRUD {
         // Configure WebApp init data
         WebApp::set_init_data(array(
             'is_backend' => true,
+            'assets_url' => Assets::get_url(),
             'backend_url' => URL::backend(),
             'base_url' => URL::site()
         ));

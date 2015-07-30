@@ -104,7 +104,19 @@ class NegoCore_Controller_CRUD extends Controller_Template {
                 {
                     // Success message & redirect
                     Messages::success(isset($messages['success']) ? $messages['success'] : 'El elemento fue modificado correctamente.');
-                    $this->go();
+
+                    // Redirect to...
+                    if (method_exists($this, 'action_read'))
+                    {
+                        $this->go(array(
+                            'action' => 'read',
+                            'id' => $object->pk()
+                        ));
+                    }
+                    else
+                    {
+                        $this->go();
+                    }
                 }
             } catch (ORM_Validation_Exception $e) {
 
