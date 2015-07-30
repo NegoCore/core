@@ -14,8 +14,6 @@
  * Class Navigation_Abstract
  *
  * @property Navigation_Section $_section
- *
- * @property int $counter
  * @property string $name
  * @property string $url
  * @property string $permissions
@@ -30,7 +28,6 @@ abstract class NegoCore_Navigation_Abstract {
      * @var array
      */
     protected $_params = array(
-        'counter' => 0,
         'permissions' => null
     );
 
@@ -226,18 +223,6 @@ abstract class NegoCore_Navigation_Abstract {
     public function get_title()
     {
         return __(Arr::get($this->_params, 'title'));
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
-     * Get section counter
-     *
-     * @return int
-     */
-    public function get_counter()
-    {
-        return (int) Arr::get($this->_params, 'counter');
     }
 
     // ----------------------------------------------------------------------

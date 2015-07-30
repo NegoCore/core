@@ -29,27 +29,6 @@ class NegoCore_Navigation_Page extends Navigation_Abstract {
     // ----------------------------------------------------------------------
 
     /**
-     * Extra Magic method
-     *
-     * @param string $name
-     * @param mixed $value
-     * @return $this
-     */
-    public function __set($name, $value)
-    {
-        parent::__set($name, $value);
-
-        if ($this->_section !== null)
-        {
-            $this->_section->update();
-        }
-
-        return $this;
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
      * Set active status
      *
      * @param bool $status

@@ -83,17 +83,7 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
         }
         else
         {
-            // Change priority
-            if (isset($this->_pages[$priority]))
-            {
-                while (isset($this->_pages[$priority]))
-                {
-                    $priority++;
-                }
-            }
-
-            // Store page
-            $this->_pages[$priority] = $page;
+            $this->_pages[$this->get_priority($priority)] = $page;
         }
 
         // Add page buttons
@@ -105,7 +95,43 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
         //
         $page->set_section($this);
 
-        return $this->update()->sort();
+        return $this->sort();
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Add page menu header
+     *
+     * @param array $header
+     * @param int $priority
+     */
+    public function add_header(array $header, $priority = 1)
+    {
+        if (isset($header['priority']))
+        {
+            $priority = (int) $header['priority'];
+        }
+
+        $this->_pages[$this->get_priority($priority)] = $header;
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Add page menu separator
+     *
+     * @param array $separator
+     * @param int $priority
+     */
+    public function add_separator(array $separator, $priority = 1)
+    {
+        if (isset($separator['priority']))
+        {
+            $priority = (int) $separator['priority'];
+        }
+
+        $this->_pages[$this->get_priority($priority)] = $separator;
     }
 
     // ----------------------------------------------------------------------
@@ -134,11 +160,19 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
                     $section->add_buttons($section['buttons']);
                 }
 
-                // Hijos
+                // Children
                 if (count($page['children']) > 0)
                 {
                     $section->add_pages($page['children']);
                 }
+            }
+            else if (isset($page['header']))
+            {
+                $this->add_header($page);
+            }
+            else if (isset($page['separator']))
+            {
+                $this->add_separator($page);
             }
             else
             {
@@ -301,26 +335,6 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
     // ----------------------------------------------------------------------
 
     /**
-     * Update counter
-     *
-     * @return $this
-     */
-    public function update()
-    {
-        $this->counter = 0;
-        $this->permissions = array();
-
-        foreach ($this->get_pages() as $page)
-        {
-            $this->counter += (int) $page->counter;
-        }
-
-        return $this;
-    }
-
-    // ----------------------------------------------------------------------
-
-    /**
      * Order sections based on priority
      *
      * @return $this
@@ -366,5 +380,27 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
         ksort($menu_items);
 
         return $menu_items;
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Get current page priority
+     *
+     * @param int $priority
+     * @return int
+     */
+    public function get_priority($priority = 1)
+    {
+        // Change priority
+        if (isset($this->_pages[$priority]))
+        {
+            while (isset($this->_pages[$priority]))
+            {
+                $priority++;
+            }
+        }
+
+        return $priority;
     }
 }
