@@ -258,6 +258,10 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
          */
         foreach ($this->get_pages() as $page)
         {
+            // Only valid pages
+            if ( ! $page instanceof Navigation_Page)
+                continue;
+
             // URL
             $url = $page->get_url();
 
@@ -292,6 +296,11 @@ class NegoCore_Navigation_Section extends Navigation_Abstract {
         {
             foreach ($this->_sections as $section)
             {
+                // Only valid sections
+                if ( ! $section instanceof Navigation_Section)
+                    continue;
+
+                // Has pages
                 if (count($section->get_pages()) > 0)
                 {
                     $found = $section->find_active_page_by_uri($uri);
