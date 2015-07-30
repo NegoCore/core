@@ -60,6 +60,24 @@ class NegoCore_Controller_CRUD extends Controller_Template {
     // ----------------------------------------------------------------------
 
     /**
+     * Function to validate the object when read.
+     *
+     * @param ORM $object
+     * @param null $message
+     */
+    public function read(ORM &$object, $message = null)
+    {
+        // Check if is a valid object
+        if ( ! $object->loaded())
+        {
+            Messages::warning($message !== null ? $message : 'El elemento que intentas leer no existe o fue eliminado.');
+            $this->go();
+        }
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
      * Function for easy update a ORM object
      *
      * @param ORM $object ORM object to update
@@ -68,11 +86,7 @@ class NegoCore_Controller_CRUD extends Controller_Template {
     public function update(ORM $object, array $messages = array())
     {
         // Check if is a valid object
-        if ( ! $object->loaded())
-        {
-            Messages::warning(isset($messages['warning']) ? $messages['warning'] : 'El elemento que intentas modificar no existe o fue eliminado.');
-            $this->go();
-        }
+        $this->read($object, isset($messages['warning']) ? $messages['warning'] : 'El elemento que intentas modificar no existe o fue eliminado.');
 
         // Only if Request is POST
         if ($this->request->method() == Request::POST)
