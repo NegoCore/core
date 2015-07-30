@@ -257,6 +257,11 @@ abstract class NegoCore_Navigation_Abstract {
             return '#';
         }
 
-        return URL::site(strtr($url, array('<id>', $id)));
+        if ($id !== null)
+        {
+            $url = strtr(urldecode($url), array('<id>' => $id));
+        }
+
+        return URL::site($url);
     }
 }
