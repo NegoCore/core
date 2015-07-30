@@ -10,6 +10,9 @@
 
 // --------------------------------------------------------------------------------
 
+/**
+ * Class NegoCore_Controller_CRUD
+ */
 class NegoCore_Controller_CRUD extends Controller_Template {
 
     /**
@@ -40,8 +43,11 @@ class NegoCore_Controller_CRUD extends Controller_Template {
                 // If object is saved....
                 if ($object->saved())
                 {
+                    // Success message
                     Messages::success(isset($messages['success']) ? $messages['success'] : 'El elemento fue registrado correctamente.');
-                    $this->go();
+
+                    // Redirect to...
+                    $this->_redirect_to($object->pk());
                 }
             } catch (ORM_Validation_Exception $e) {
 
@@ -102,21 +108,11 @@ class NegoCore_Controller_CRUD extends Controller_Template {
                 // If object is saved....
                 if ($object->saved())
                 {
-                    // Success message & redirect
+                    // Success message
                     Messages::success(isset($messages['success']) ? $messages['success'] : 'El elemento fue modificado correctamente.');
 
                     // Redirect to...
-                    if (method_exists($this, 'action_read'))
-                    {
-                        $this->go(array(
-                            'action' => 'read',
-                            'id' => $object->pk()
-                        ));
-                    }
-                    else
-                    {
-                        $this->go();
-                    }
+                    $this->_redirect_to($object->pk());
                 }
             } catch (ORM_Validation_Exception $e) {
 
@@ -129,6 +125,28 @@ class NegoCore_Controller_CRUD extends Controller_Template {
                 // Validation messages
                 Messages::validation($e);
             }
+        }
+    }
+
+    // ----------------------------------------------------------------------
+
+    /**
+     * Redirect to...
+     *
+     * @param int $object_id
+     */
+    protected function _redirect_to($object_id)
+    {
+        if (method_exists($this, 'action_read'))
+        {
+            $this->go(array(
+                'action' => 'read',
+                'id' => $object_id
+            ));
+        }
+        else
+        {
+            $this->go();
         }
     }
 }
